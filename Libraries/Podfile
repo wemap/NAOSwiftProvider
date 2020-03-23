@@ -1,0 +1,6 @@
+use_frameworks!
+target 'NAOSwiftProvider_Tests' do
+  pod 'NAOSwiftProvider', :path => '../'
+  pod 'NAOSDK'
+  
+end
