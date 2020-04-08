@@ -9,15 +9,13 @@
 import UIKit
 import NAOSDKModule
 
-public class LocationProvider: ServiceProvider, NAOLocationHandleDelegate {
+public class LocationProvider: ServiceProvider, NAOLocationHandleDelegate, NAOSyncDelegate, NAOSensorsDelegate {
     
     
     var locationHandle: NAOLocationHandle? = nil
-    public var delegate: LocationProviderDelegate?
     
-    // Callbacks declarations
-    public var onLocationAvailable:((_ latitude: Float, _ longitude: Float, _ altitude: Int) -> ())?
-    public var onLocationStatusChanged:((_ statusString: String) -> ())?
+    // LocationProviderDelegate
+    public weak var delegate: LocationProviderDelegate?
     
     required public init(apikey: String) {
         super.init(apikey: apikey)
@@ -44,89 +42,122 @@ public class LocationProvider: ServiceProvider, NAOLocationHandleDelegate {
      
     public func didEnterSite (_ name: String){
         //Post the didEnterSite notification
-        NotificationCenter.default.post(name: NSNotification.Name("notifyEnterSite"), object: nil)
-        delegate?.didEnterSite(name)
+        DispatchQueue.main.async {
+            if let delegate = self.delegate {
+                delegate.didEnterSite(name)
+            }
+        }
     }
 
 
     public func didExitSite (_ name: String){
         //Post the didExitSite notification
-        NotificationCenter.default.post(name: NSNotification.Name("notifyExitSite"), object: nil)
-        delegate?.didExitSite(name)
+        DispatchQueue.main.async {
+            if let delegate = self.delegate {
+                delegate.didExitSite(name)
+            }
+        }
     }
 
     public func didLocationChange(_ location: CLLocation!) {
-        let latitude = (location.coordinate.latitude.description as NSString).floatValue
-        let longitude = (location.coordinate.longitude.description as NSString).floatValue
-        let altitude = Int(location!.altitude as Double)
-        // Send the location through the callback
-        onLocationAvailable?(latitude, longitude, altitude)
-        
-        delegate?.didLocationChange(location)
+        DispatchQueue.main.async {
+            if let delegate = self.delegate {
+                delegate.didLocationChange(location)
+            }
+        }
     }
 
     public func didLocationStatusChanged(_ status: DBTNAOFIXSTATUS) {
+        var statusMessage = ""
         switch (status) {
             case DBTNAOFIXSTATUS.NAO_FIX_UNAVAILABLE:
-                onLocationStatusChanged?("LOCATION STATUS: FIX_UNAVAILABLE")
-                delegate?.didLocationStatusChanged("LOCATION STATUS: FIX_UNAVAILABLE")
+                statusMessage = "LOCATION STATUS: FIX_UNAVAILABLE"
                 break;
             case DBTNAOFIXSTATUS.NAO_FIX_AVAILABLE:
-                onLocationStatusChanged?("LOCATION STATUS: UNAVAILABLE")
-                delegate?.didLocationStatusChanged("LOCATION STATUS: UNAVAILABLE")
+                statusMessage = "LOCATION STATUS: UNAVAILABLE"
                 break;
             case DBTNAOFIXSTATUS.NAO_TEMPORARY_UNAVAILABLE:
-                onLocationStatusChanged?("LOCATION STATUS: TEMPORARY_UNAVAILABLE")
-                delegate?.didLocationStatusChanged("LOCATION STATUS: TEMPORARY_UNAVAILABLE")
+                statusMessage = "LOCATION STATUS: TEMPORARY_UNAVAILABLE"
                 break;
             case DBTNAOFIXSTATUS.NAO_OUT_OF_SERVICE:
-                onLocationStatusChanged?("LOCATION STATUS: OUT_OF_SERVICE")
-                delegate?.didLocationStatusChanged("LOCATION STATUS: OUT_OF_SERVICE")
+                statusMessage = "LOCATION STATUS: OUT_OF_SERVICE"
                 break;
             default:
-                onLocationStatusChanged?("LOCATION STATUS: UNKNOWN")
-                delegate?.didLocationStatusChanged("LOCATION STATUS: UNKNOWN")
+                statusMessage = "LOCATION STATUS: UNKNOWN"
                 break;
         }
         
-    }
-
-    public func didFailWithErrorCode(_ errCode: DBNAOERRORCODE, andMessage message: String!) {
-        delegate?.didFailWithErrorCode("NAOLocationHandle fails: \(String(describing: message)) with error code \(errCode)")
+        DispatchQueue.main.async {
+            if let delegate = self.delegate {
+                delegate.didLocationStatusChanged(statusMessage)
+            }
+        }
+        
     }
     
     // MARK: - NAOSensorsDelegate
     
-    public override func requiresWifiOn() {
+    public func requiresWifiOn() {
         //Post the requiresWifiOn notification
-        delegate?.requiresWifiOn()
+        DispatchQueue.main.async {
+            if let delegate = self.delegate {
+                delegate.requiresWifiOn()
+            }
+        }
     }
     
-    public override func requiresBLEOn() {
+    public func requiresBLEOn() {
         //Post the requiresBLEOn notification
-        delegate?.requiresBLEOn()
+        DispatchQueue.main.async {
+            if let delegate = self.delegate {
+                delegate.requiresBLEOn()
+            }
+        }
     }
     
-    public override func requiresLocationOn() {
+    public func requiresLocationOn() {
         //Post the requiresLocationOn notification
-        delegate?.requiresLocationOn()
+        DispatchQueue.main.async {
+            if let delegate = self.delegate {
+                delegate.requiresLocationOn()
+            }
+        }
     }
     
-    public override func requiresCompassCalibration() {
+    public func requiresCompassCalibration() {
         //Post the requiresCompassCalibration notification
-        delegate?.requiresCompassCalibration()
+        DispatchQueue.main.async {
+            if let delegate = self.delegate {
+                delegate.requiresCompassCalibration()
+            }
+        }
     }
     
      // MARK: - NAOSyncDelegate --
     
-    public override func didSynchronizationSuccess() {
+    public func didSynchronizationSuccess() {
         //Post the didSynchronizationSuccess notification
-        delegate?.didSynchronizationSuccess()
+        DispatchQueue.main.async {
+            if let delegate = self.delegate {
+                delegate.didSynchronizationSuccess()
+            }
+        }
     }
     
-    public override func didSynchronizationFailure(_ errorCode: DBNAOERRORCODE, msg message: String!) {
-        
-        delegate?.didSynchronizationFailure("The synchronization fail: \(String(describing: message)) with error code \(errorCode)")
+    public func didSynchronizationFailure(_ errorCode: DBNAOERRORCODE, msg message: String!) {
+        DispatchQueue.main.async {
+            if let delegate = self.delegate {
+                delegate.didSynchronizationFailure("The synchronization fail: \(String(describing: message)) with error code \(errorCode)")
+            }
+        }
+    }
+    
+    public func didFailWithErrorCode(_ errCode: DBNAOERRORCODE, andMessage message: String!) {
+        DispatchQueue.main.async {
+            if let delegate = self.delegate {
+                delegate.didLocationFailWithErrorCode("NAOLocationHandle fails: \(String(describing: message)) with error code \(errCode)")
+            }
+        }
     }
 
     deinit {

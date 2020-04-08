@@ -19,9 +19,9 @@ public protocol LocationProviderDelegate: AnyObject{
     
     func didExitSite (_ name: String!)
     
-    func didFailWithErrorCode(_ message: String!)
-    
     func didApikeyReceived (_ apikey: String!)
+    
+    func didLocationFailWithErrorCode(_ message: String!)
     
     // MARK: - NAOSensorsDelegate
     func requiresWifiOn()
@@ -35,6 +35,8 @@ public protocol LocationProviderDelegate: AnyObject{
      // MARK: - NAOSyncDelegate --
 
     func didSynchronizationSuccess()
-
+    
     func didSynchronizationFailure(_ message: String!)
+    
+    
 }

@@ -9,14 +9,10 @@
 import UIKit
 import NAOSDKModule
 
-public class ServiceProvider: NSObject, NAOSyncDelegate, NAOSensorsDelegate {
+public class ServiceProvider: NSObject {
     
     var apikey: String
     var status: Bool
-    
-    // Callbacks declarations
-    static public var onSynchronizationFailure:((_ message: String) -> ())?
-    static public var onErrorEventWithErrorCode:(( _ message: String) -> ())?
 
     required public init(apikey: String) {
         self.status = false
@@ -30,38 +26,5 @@ public class ServiceProvider: NSObject, NAOSyncDelegate, NAOSensorsDelegate {
     public func start() {}
     
     public func  stop() {}
-    // MARK: - NAOSensorsDelegate
     
-    public func requiresWifiOn() {
-        //Post the requiresWifiOn notification
-        NotificationCenter.default.post(name: NSNotification.Name("notifyWifiOnRequest"), object: nil)
-    }
-    
-    public func requiresBLEOn() {
-        //Post the requiresBLEOn notification
-        NotificationCenter.default.post(name: NSNotification.Name("notifyBLEOnRequest"), object: nil)
-    }
-    
-    public func requiresLocationOn() {
-        //Post the requiresLocationOn notification
-        NotificationCenter.default.post(name: NSNotification.Name("notifyLocationOnRequest"), object: nil)
-    }
-    
-    public func requiresCompassCalibration() {
-        //Post the requiresCompassCalibration notification
-        NotificationCenter.default.post(name: NSNotification.Name("notifyCompassCalibrationRequest"), object: nil)
-    }
-    
-     // MARK: - NAOSyncDelegate --
-    
-    public func didSynchronizationSuccess() {
-        //Post the didSynchronizationSuccess notification
-        NotificationCenter.default.post(name: NSNotification.Name("notifySynchronizationSuccess"), object: nil)
-        status = true
-    }
-    
-    public func didSynchronizationFailure(_ errorCode: DBNAOERRORCODE, msg message: String!) {
-        ServiceProvider.onErrorEventWithErrorCode?("The synchronization fails! \(String(describing: message)) with error code \(errorCode)")
-        status = false
-    }
 }

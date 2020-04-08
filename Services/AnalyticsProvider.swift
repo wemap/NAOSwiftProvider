@@ -9,9 +9,11 @@
 import UIKit
 import NAOSDKModule
 
-public class AnalyticsProvider: ServiceProvider, NAOAnalyticsHandleDelegate {
+public class AnalyticsProvider: ServiceProvider, NAOAnalyticsHandleDelegate, NAOSyncDelegate, NAOSensorsDelegate {
     
-     var analyticHandler: NAOAnalyticsHandle? = nil
+    var analyticHandler: NAOAnalyticsHandle? = nil
+
+    public weak var delegate: AnalyticsProviderDelegate?
     
      required public init(apikey: String) {
          super.init(apikey: apikey)
@@ -34,9 +36,70 @@ public class AnalyticsProvider: ServiceProvider, NAOAnalyticsHandleDelegate {
          self.status = false
      }
      
-     // MARK: - NAOAnalyticsHandleDelegate
-     public func didFailWithErrorCode(_ errCode: DBNAOERRORCODE, andMessage message: String!) {
-        ServiceProvider.onErrorEventWithErrorCode?("Analytics fail : \(String(describing: message)) with error code \(errCode)")
+    // MARK: - NAOAnalyticsHandleDelegate
+    public func didFailWithErrorCode(_ errCode: DBNAOERRORCODE, andMessage message: String!) {
+         DispatchQueue.main.async {
+             if let delegate = self.delegate {
+                 delegate.didAnalyticsFailWithErrorCode("Analytics fails: \(String(describing: message)) with error code \(errCode)")
+             }
+         }
+     }
+     
+     // MARK: - NAOSensorsDelegate
+     
+     public func requiresWifiOn() {
+         //Post the requiresWifiOn notification
+         DispatchQueue.main.async {
+             if let delegate = self.delegate {
+                 delegate.requiresWifiOn()
+             }
+         }
+     }
+     
+     public func requiresBLEOn() {
+         //Post the requiresBLEOn notification
+         DispatchQueue.main.async {
+             if let delegate = self.delegate {
+                 delegate.requiresBLEOn()
+             }
+         }
+     }
+     
+     public func requiresLocationOn() {
+         //Post the requiresLocationOn notification
+         DispatchQueue.main.async {
+             if let delegate = self.delegate {
+                 delegate.requiresLocationOn()
+             }
+         }
+     }
+     
+     public func requiresCompassCalibration() {
+         //Post the requiresCompassCalibration notification
+         DispatchQueue.main.async {
+             if let delegate = self.delegate {
+                 delegate.requiresCompassCalibration()
+             }
+         }
+     }
+     
+      // MARK: - NAOSyncDelegate --
+     
+     public func didSynchronizationSuccess() {
+         //Post the didSynchronizationSuccess notification
+         DispatchQueue.main.async {
+             if let delegate = self.delegate {
+                 delegate.didSynchronizationSuccess()
+             }
+         }
+     }
+     
+     public func didSynchronizationFailure(_ errorCode: DBNAOERRORCODE, msg message: String!) {
+         DispatchQueue.main.async {
+             if let delegate = self.delegate {
+                 delegate.didSynchronizationFailure("The synchronization fail: \(String(describing: message)) with error code \(errorCode)")
+             }
+         }
      }
      
      deinit {

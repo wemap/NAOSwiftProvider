@@ -10,13 +10,13 @@ import UIKit
 import NAOSDKModule
 
 
-class BeaconProximityProvider: ServiceProvider, NAOBeaconProximityHandleDelegate {
+
+class BeaconProximityProvider: ServiceProvider, NAOBeaconProximityHandleDelegate, NAOSyncDelegate, NAOSensorsDelegate {
 
     var beaconProximityHandler: NAOBeaconProximityHandle? = nil
     
-    // Callbacks declarations
-    public var onRangeBeaconEvent:((_ beaconPublicID: String, _ rssi: Int32) -> ())?
-    public var onProximityChangeEvent:((_ proximity: DBTBEACONSTATE, _ beaconPublicID: String?) -> ())?
+    // Delegates
+    public weak var delegate: BeaconProximityProviderDelegate?
     
      required public init(apikey: String) {
          super.init(apikey: apikey)
@@ -41,16 +41,85 @@ class BeaconProximityProvider: ServiceProvider, NAOBeaconProximityHandleDelegate
      
     // MARK: - NAOBeaconProximityHandleDelegate
     public func didFailWithErrorCode(_ errCode: DBNAOERRORCODE, andMessage message: String!) {
-        ServiceProvider.onErrorEventWithErrorCode?("BeaconProximity fail: \(String(describing: message)) with error code \(errCode)")
+        DispatchQueue.main.async {
+            if let delegate = self.delegate {
+                delegate.didBeaconProximityFailWithErrorCode("BeaconProximity fail: \(String(describing: message)) with error code \(errCode)")
+            }
+        }
     }
 
     public func didRangeBeacon(_ beaconPublicID: String!, withRssi rssi: Int32) {
-        onRangeBeaconEvent!(beaconPublicID, rssi)
+        DispatchQueue.main.async {
+            if let delegate = self.delegate {
+                delegate.didRangeBeacon(beaconPublicID, withRssi: rssi)
+            }
+        }
     }
     
     public func didProximityChange(_ proximity: DBTBEACONSTATE, forBeacon beaconPublicID: String!) {
-        onProximityChangeEvent!(proximity, beaconPublicID)
+        DispatchQueue.main.async {
+            if let delegate = self.delegate {
+                delegate.didProximityChange("\(proximity)", forBeacon: beaconPublicID)
+            }
+        }
     }
+     
+     // MARK: - NAOSensorsDelegate
+     
+     public func requiresWifiOn() {
+         //Post the requiresWifiOn notification
+         DispatchQueue.main.async {
+             if let delegate = self.delegate {
+                 delegate.requiresWifiOn()
+             }
+         }
+     }
+     
+     public func requiresBLEOn() {
+         //Post the requiresBLEOn notification
+         DispatchQueue.main.async {
+             if let delegate = self.delegate {
+                 delegate.requiresBLEOn()
+             }
+         }
+     }
+     
+     public func requiresLocationOn() {
+         //Post the requiresLocationOn notification
+         DispatchQueue.main.async {
+             if let delegate = self.delegate {
+                 delegate.requiresLocationOn()
+             }
+         }
+     }
+     
+     public func requiresCompassCalibration() {
+         //Post the requiresCompassCalibration notification
+         DispatchQueue.main.async {
+             if let delegate = self.delegate {
+                 delegate.requiresCompassCalibration()
+             }
+         }
+     }
+     
+      // MARK: - NAOSyncDelegate --
+     
+     public func didSynchronizationSuccess() {
+         //Post the didSynchronizationSuccess notification
+         DispatchQueue.main.async {
+             if let delegate = self.delegate {
+                 delegate.didSynchronizationSuccess()
+             }
+         }
+     }
+     
+     public func didSynchronizationFailure(_ errorCode: DBNAOERRORCODE, msg message: String!) {
+         DispatchQueue.main.async {
+             if let delegate = self.delegate {
+                 delegate.didSynchronizationFailure("The synchronization fail: \(String(describing: message)) with error code \(errorCode)")
+             }
+         }
+     }
 
     deinit {
         print("BeaconProximityProvider deinitialized")

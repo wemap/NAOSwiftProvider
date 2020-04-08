@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'NAOSwiftProvider'
-  s.version          = '1.0.2'
+  s.version          = '1.2.0'
   s.swift_version    = '5.0'
   s.summary          = 'NAOSwiftProvider framework allows users to easily integrate NAOSDK into the Swift applications.'
 
