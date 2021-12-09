@@ -38,6 +38,77 @@ public class LocationProvider: ServiceProvider, NAOLocationHandleDelegate, NAOSy
         self.status = false
     }
     
+    /*
+        @brief Restarting the location service.
+        @param[in]  void
+        @return True if the service has successful restarted, and false otherwise
+     */
+    public func restart () -> Bool? {
+        return self.locationHandle?.restart()
+    }
+    
+    public func synchronizeData (delegate: NAOSyncDelegate) {
+        self.locationHandle?.synchronizeData(delegate)
+    }
+
+    public func synchronizeData (delegate: NAOSyncDelegate, with autoSync: Bool) {
+        self.locationHandle?.synchronizeData(delegate, withAutoSync: autoSync)
+    }
+
+    public func synchronizeData (delegate: NAOSyncDelegate, for sites:[NSArray]) {
+        self.locationHandle?.synchronizeData(delegate, forSites: sites)
+    }
+    
+    /*
+        @brief Setting the power mode getter.
+        @param[in]  power mode
+        @return void
+     */
+    public func setPowerMode (power: DBTPOWERMODE) {
+        self.locationHandle?.setPowerMode(power);
+    }
+
+    /*
+        @brief The power mode getter.
+        @param[in]  void
+        @return It returns the power mode of the service handle
+     */
+    public func getPowerMode () -> DBTPOWERMODE? {
+        return self.locationHandle?.getPowerMode();
+    }
+
+
+    /*
+        @brief Sets maximum number of calibration requests.
+        @detail In some venues, magnetic interferences can cause frequent device compass decalibration. This method provides a way to reduce notification spam to the user.
+        @param[in] max Maximum number of calibration requests to be issued. Default is -1, which is infinity. Set it to 0 to always ignore the notification.
+        @return void
+     */
+    public func setCompassCalibrationScreenShowedMaxNumber(max_cal: Int32) {
+        self.locationHandle?.setCompassCalibrationScreenShowedMaxNumber(max_cal)
+    }
+    /*
+        @brief Sets minimum interval between calibration requests.
+        @detail Provides a way to control how often the end user will be prompted about compass calibration.
+        @param[in] nSec    Minimum time interval between two calibration requests, in seconds. Default is 1800 seconds (30 minutes).
+     */
+    public func setTimeMinBetweenCompassCalibrationScreen (to nSec: Int32) {
+        self.locationHandle?.setTimeMinBetweenCompassCalibrationScreen(nSec)
+    }
+
+    /*
+        @brief: Resets the number of times the calibration has been displayed.
+        @param [in] None
+        @return void
+     */
+    public func resetCompassCalibrationScreenShowed(){
+        self.locationHandle?.resetCompassCalibrationScreenShowed()
+    }
+
+    public func getLastKnownLocation() -> CLLocation? {
+        return self.locationHandle?.getLastKnownLocation()
+    }
+    
     // MARK: - NAOLocationHandleDelegate --
      
     public func didEnterSite (_ name: String){

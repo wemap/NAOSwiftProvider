@@ -1,4 +1,5 @@
 module NAOSDKModule {
-  header "../../NAOSDK/Pod/Classes/NAOSDK.h"
+//  header "../../NAOSDK/Pod/Classes/NAOSDK.h"
+header "/Users/polestar/Dev/MY_PROJECTS/NAOAdvancedAppDemo/Pods/NAOSDK/Pod/Classes/NAOSDK.h"
   export *
 }
