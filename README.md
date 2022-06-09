@@ -1,5 +1,7 @@
 # NAOSwiftProvider
 
+Not yet available on CocoaPods.
+
 [![Version](https://img.shields.io/cocoapods/v/NAOSwiftProvider.svg?style=flat)](https://cocoapods.org/pods/NAOSwiftProvider)
 [![License](https://img.shields.io/cocoapods/l/NAOSwiftProvider.svg?style=flat)](https://cocoapods.org/pods/NAOSwiftProvider)
 [![Platform](https://img.shields.io/cocoapods/p/NAOSwiftProvider.svg?style=flat)](https://cocoapods.org/pods/NAOSwiftProvider)
@@ -12,7 +14,7 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 
 ## Installation
 
-NAOSwiftProvider is available through [CocoaPods](https://cocoapods.org). To install
+NAOSwiftProvider will be available through [CocoaPods](https://cocoapods.org). To install
 it, simply add the following line to your Podfile:
 
 ```ruby
