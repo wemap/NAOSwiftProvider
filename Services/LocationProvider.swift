@@ -9,7 +9,7 @@
 import UIKit
 import NAOSDKModule
 
-public class LocationProvider: ServiceProvider, NAOLocationHandleDelegate, NAOSyncDelegate, NAOSensorsDelegate {
+open class LocationProvider: ServiceProvider, NAOLocationHandleDelegate, NAOSyncDelegate, NAOSensorsDelegate {
     
     
     var locationHandle: NAOLocationHandle? = nil

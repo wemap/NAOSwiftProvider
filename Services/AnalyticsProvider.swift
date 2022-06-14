@@ -9,7 +9,7 @@
 import UIKit
 import NAOSDKModule
 
-public class AnalyticsProvider: ServiceProvider, NAOAnalyticsHandleDelegate, NAOSyncDelegate, NAOSensorsDelegate {
+open class AnalyticsProvider: ServiceProvider, NAOAnalyticsHandleDelegate, NAOSyncDelegate, NAOSensorsDelegate {
     
     var analyticHandler: NAOAnalyticsHandle? = nil
 

@@ -9,7 +9,7 @@
 import UIKit
 import NAOSDKModule
 
-public class BeaconReportingProvider: ServiceProvider, NAOBeaconReportingHandleDelegate, NAOSyncDelegate, NAOSensorsDelegate {
+open class BeaconReportingProvider: ServiceProvider, NAOBeaconReportingHandleDelegate, NAOSyncDelegate, NAOSensorsDelegate {
     
      var beaconReportingHandler: NAOBeaconReportingHandle? = nil
     

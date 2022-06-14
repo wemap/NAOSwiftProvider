@@ -9,7 +9,7 @@
 import UIKit
 import NAOSDKModule
 
-public class GeofencingHandler: ServiceProvider, NAOGeofenceHandleDelegate, NAOSyncDelegate, NAOSensorsDelegate{
+open class GeofencingHandler: ServiceProvider, NAOGeofenceHandleDelegate, NAOSyncDelegate, NAOSensorsDelegate{
     
     var geofencingHandler: NAOGeofencingHandle? = nil
     

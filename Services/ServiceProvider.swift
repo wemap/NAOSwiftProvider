@@ -9,7 +9,7 @@
 import UIKit
 import NAOSDKModule
 
-public class ServiceProvider: NSObject {
+open class ServiceProvider: NSObject {
     
     var apikey: String
     var status: Bool

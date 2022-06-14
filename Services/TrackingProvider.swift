@@ -11,7 +11,7 @@ import UIKit
 import UIKit
 import NAOSDKModule
 
-public class TrackingProvider: ServiceProvider, NAOTrackingHandleDelegate, NAOSyncDelegate, NAOSensorsDelegate {
+open class TrackingProvider: ServiceProvider, NAOTrackingHandleDelegate, NAOSyncDelegate, NAOSensorsDelegate {
     
     
     var trackingHandle: NAOTrackingHandle? = nil
