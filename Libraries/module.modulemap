@@ -1,4 +1,4 @@
 module NAOSDKModule {
-  header "Pods/NAOSDK/Pod/Classes/NAOSDK.h"
+  header "../../NAOSDK/Pod/Classes/NAOSDK.h"
   export *
 }
