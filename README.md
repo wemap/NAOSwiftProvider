@@ -18,7 +18,7 @@ NAOSwiftProvider will be available through [CocoaPods](https://cocoapods.org). T
 it, simply add the following line to your Podfile:
 
 ```ruby
-pod 'NAOSwiftProvider', :git => 'https://bitbucket.org/polestarusa/naoswiftprovider.git', :tag => '1.2.1'
+pod 'NAOSwiftProvider', :git => 'https://bitbucket.org/polestarusa/naoswiftprovider.git', :tag => '1.3.0'
 ```
 
 Or when it will be available on Cocoapods
@@ -28,6 +28,3 @@ pod 'NAOSwiftProvider'
 ```
 
 
-## License
-
-NAOSwiftProvider is available under the MIT license. See the LICENSE file for more info.

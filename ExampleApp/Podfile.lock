@@ -1,0 +1,29 @@
+PODS:
+  - NAOSDK (4.11.12)
+  - NAOSwiftProvider (1.2.4):
+    - NAOSDK
+
+DEPENDENCIES:
+  - NAOSwiftProvider (from `https://bitbucket.org/polestarusa/naoswiftprovider.git`, branch `dev`)
+
+SPEC REPOS:
+  trunk:
+    - NAOSDK
+
+EXTERNAL SOURCES:
+  NAOSwiftProvider:
+    :branch: dev
+    :git: https://bitbucket.org/polestarusa/naoswiftprovider.git
+
+CHECKOUT OPTIONS:
+  NAOSwiftProvider:
+    :commit: 2722c145a7f6b454cfae3d67ac0eb9b205fa0e69
+    :git: https://bitbucket.org/polestarusa/naoswiftprovider.git
+
+SPEC CHECKSUMS:
+  NAOSDK: 2668b52df4cf78384c43bc7e0118c13951b3ab2b
+  NAOSwiftProvider: 7187b7a5a94fad020cd2aad95101a987d292ddd6
+
+PODFILE CHECKSUM: 12f3c1b261b45531958e62eae65ef9c3eaf5b4c5
+
+COCOAPODS: 1.12.1
